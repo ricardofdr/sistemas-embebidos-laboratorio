@@ -5,7 +5,7 @@ void setup() {
 }
 
 void loop() {
-    if (PIND2) {    // define a correct condition involving register PIND
+    if (PIND & 1<<PIND2) {    // define a correct condition involving register PIND
       PORTB = 0<<PORTB5;    // turn the LED of pin PB5/D13 OFF
     } 
     else {
