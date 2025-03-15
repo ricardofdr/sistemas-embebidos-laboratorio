@@ -56,10 +56,27 @@ char USART_receive(void)
 
 
 ISR(USART_RX_vect) {
-  char c = UDR0; // read incoming byte to clear interrupt flag (ATmega328P datasheet, section 20.11)
+  // char c = UDR0; //VERSÃO ALTERNATIVA 
+  char c = USART_receive(); // read incoming byte to clear interrupt flag (ATmega328P datasheet, section 20.11)
 
   /* Colocar aqui o processamento do byte recebido e actualização do blinkRate */
+  // while (Serial.available()==0); // wait until at least one character is available
 
+  // char ch = Serial.read(); // read the character
+  if( isDigit(c) ) // is this an ascii digit between 0 and 9?
+  {
+    blinkRate = (c - '0'); // ASCII value converted to numeric value
+    // Serial.print("Digit pressed: ");
+    usart_printstring("\nDigit pressed:");
+    // Serial.println(blinkRate); // print the number
+    usart_putinteger(blinkRate);
+    blinkRate = blinkRate * 100; // actual rate is 100ms times received digit
+  }
+
+  //Blink 5 times
+  for (int j=0;j<5;j++){
+    blink();
+  }
 }
 
 
